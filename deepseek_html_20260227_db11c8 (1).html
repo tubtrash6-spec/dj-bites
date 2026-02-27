@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>खाद्य कार्ड व्यवसाय – दीपक & जगदीश (50-50)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #f3f2ef;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h1 {
+            margin-top: 0;
+            color: #1e3c3f;
+            font-weight: 600;
+            font-size: 2.2rem;
+            border-left: 8px solid #e67e22;
+            padding-left: 20px;
+        }
+        .subhead {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            background: #fef5e7;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+        .card {
+            background: #f9fafc;
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02), 0 8px 20px rgba(0,20,30,0.05);
+        }
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-end;
+        }
+        .input-group {
+            flex: 1 1 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .input-group label {
+            font-weight: 600;
+            color: #1e3c3f;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+        }
+        .input-group input, .input-group select, .input-group button {
+            padding: 12px 16px;
+            border: 2px solid #d5dce3;
+            border-radius: 40px;
+            font-size: 1rem;
+            background: white;
+            transition: 0.2s;
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: #e67e22;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(230,126,34,0.2);
+        }
+        button {
+            background: #e67e22;
+            color: white;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            border-radius: 40px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: 2px solid transparent;
+        }
+        button:hover {
+            background: #cf6c17;
+            transform: scale(1.02);
+        }
+        .btn-secondary {
+            background: #34495e;
+        }
+        .btn-secondary:hover {
+            background: #2c3e50;
+        }
+        .btn-danger {
+            background: #b03a2e;
+        }
+        .btn-danger:hover {
+            background: #942c21;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        th {
+            background: #1e3c3f;
+            color: white;
+            font-weight: 600;
+            padding: 14px 8px;
+            text-align: center;
+        }
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e2e9f0;
+            text-align: center;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .summary-box {
+            background: white;
+            border-radius: 20px;
+            padding: 22px 18px;
+            box-shadow: 0 6px 14px rgba(0,20,30,0.05);
+            border: 1px solid #e7edf3;
+        }
+        .summary-box h3 {
+            margin: 0 0 12px 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            border-bottom: 2px dashed #e67e22;
+            padding-bottom: 8px;
+        }
+        .amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e3c3f;
+        }
+        .small-note {
+            font-size: 0.9rem;
+            color: #5f6b7a;
+            margin-top: 8px;
+        }
+        .settlement {
+            background: #eef9f2;
+            border-left: 8px solid #27ae60;
+            padding: 18px 25px;
+            border-radius: 18px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e3c3f;
+        }
+        .footer-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .month-picker {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: #eef2f6;
+            padding: 12px 25px;
+            border-radius: 50px;
+        }
+        .month-picker label {
+            font-weight: 600;
+            color: #1e3c3f;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🍽️ दीपक & जगदीश · फूड कार्ड बिज़नेस</h1>
+    <div class="subhead">✅ 50% – 50% साझेदारी · हर महीने बराबर बँटवारा</div>
+
+    <!-- नया लेन-देन फॉर्म -->
+    <div class="card">
+        <h2 style="margin-top:0; color:#1e3c3f;">➕ नया लेन-देन जोड़ें</h2>
+        <div class="flex-row">
+            <div class="input-group">
+                <label>📅 तारीख</label>
+                <input type="date" id="txnDate" value="">
+            </div>
+            <div class="input-group">
+                <label>📝 विवरण</label>
+                <input type="text" id="txnDesc" placeholder="जैसे समान, चाय, किराया...">
+            </div>
+            <div class="input-group">
+                <label>💰 राशि (₹)</label>
+                <input type="number" id="txnAmount" step="1" min="1" placeholder="0">
+            </div>
+            <div class="input-group">
+                <label>🔁 प्रकार</label>
+                <select id="txnType">
+                    <option value="expense">खर्चा (Expense)</option>
+                    <option value="income">आमदनी (Income)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>👤 व्यक्ति</label>
+                <select id="txnPerson">
+                    <option value="Deepak">दीपक (Deepak)</option>
+                    <option value="Jagdish">जगदीश (Jagdish)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <button id="addBtn">➕ लेन-देन जोड़ें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- महीना चुनें और सारांश -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+        <div class="month-picker">
+            <label>📆 महीना चुनें:</label>
+            <input type="month" id="monthSelector" value="">
+            <button id="calcBtn" class="btn-secondary">गणना करें</button>
+        </div>
+        <button id="clearAllBtn" class="btn-danger" style="background:#7f8c8d;">🗑️ सभी डेटा मिटाएँ</button>
+    </div>
+
+    <!-- महीने का हिसाब (डायनामिक) -->
+    <div class="card" style="background: #e9f0f5;">
+        <h2 style="margin:0 0 10px 0;">📊 महीने का नतीजा (चुने हुए महीने के लिए)</h2>
+        <div class="summary-grid" id="summaryBoxes">
+            <!-- JS fill karega -->
+        </div>
+        <div id="settlementMessage" class="settlement">
+            ⏳ कृपया महीना चुनें और 'गणना करें' दबाएँ
+        </div>
+    </div>
+
+    <!-- सभी लेन-देन की तालिका -->
+    <h2 style="margin-bottom: 10px;">📋 पूरा लेजर (सभी महीने)</h2>
+    <div style="overflow-x: auto;">
+        <table id="transactionTable">
+            <thead>
+                <tr>
+                    <th>तारीख</th>
+                    <th>विवरण</th>
+                    <th>राशि (₹)</th>
+                    <th>प्रकार</th>
+                    <th>व्यक्ति</th>
+                    <th>हटाएँ</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- JS rows -->
+            </tbody>
+        </table>
+    </div>
+    <p style="color:#5f6b7a; font-size:0.9rem;">* सारा डेटा आपके ब्राउज़र में सुरक्षित रहता है (Local Storage)</p>
+</div>
+
+<script>
+    (function() {
+        // Storage key
+        const STORAGE_KEY = 'food_card_partnership';
+
+        // Sample initial data (if storage empty)
+        const defaultTxns = [
+            { id: Date.now()-100000, date: '2025-03-02', description: 'समान (आटा, तेल)', amount: 1200, type: 'expense', person: 'Deepak' },
+            { id: Date.now()-200000, date: '2025-03-03', description: 'बिक्री - चाय', amount: 800, type: 'income', person: 'Jagdish' },
+            { id: Date.now()-300000, date: '2025-03-05', description: 'समान (सब्जी)', amount: 600, type: 'expense', person: 'Jagdish' },
+            { id: Date.now()-400000, date: '2025-03-07', description: 'बिक्री - समोसा', amount: 1500, type: 'income', person: 'Deepak' },
+            { id: Date.now()-500000, date: '2025-03-10', description: 'गैस सिलेंडर', amount: 950, type: 'expense', person: 'Deepak' },
+        ];
+
+        // Load transactions from localStorage or default
+        let transactions = [];
+        function loadTransactions() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    transactions = JSON.parse(stored);
+                } catch (e) {
+                    transactions = [...defaultTxns];
+                }
+            } else {
+                transactions = [...defaultTxns];
+            }
+            // sort by date (newest first for display? but we'll keep as is, can sort in table)
+            transactions.sort((a,b) => a.date.localeCompare(b.date) || a.id - b.id);
+        }
+        function saveTransactions() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+        }
+
+        // Helper to format currency
+        const formatMoney = (amt) => '₹' + amt.toLocaleString('en-IN');
+
+        // Render table
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            if (!tbody) return;
+            if (transactions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="padding:30px; text-align:center; color:#888;">अभी कोई लेन-देन नहीं। ऊपर जोड़ें।</td></tr>';
+                return;
+            }
+            let html = '';
+            // show latest first? let's sort descending by date then id
+            const sorted = [...transactions].sort((a,b) => b.date.localeCompare(a.date) || b.id - a.id);
+            sorted.forEach(txn => {
+                const typeText = txn.type === 'expense' ? '🧾 खर्चा' : '💰 आमदनी';
+                const personName = txn.person === 'Deepak' ? 'दीपक' : 'जगदीश';
+                html += `<tr>
+                    <td>${txn.date}</td>
+                    <td>${txn.description}</td>
+                    <td>${formatMoney(txn.amount)}</td>
+                    <td>${typeText}</td>
+                    <td>${personName}</td>
+                    <td><button class="delete-btn" data-id="${txn.id}">हटाएँ</button></td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+            // Attach delete events
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = Number(e.target.dataset.id);
+                    transactions = transactions.filter(t => t.id !== id);
+                    saveTransactions();
+                    renderTable();
+                    // clear summary or re-calc if month selected
+                    const monthVal = document.getElementById('monthSelector').value;
+                    if (monthVal) calculateForMonth(monthVal);
+                });
+            });
+        }
+
+        // Calculate for given month (YYYY-MM)
+        function calculateForMonth(monthStr) {
+            if (!monthStr) {
+                document.getElementById('settlementMessage').innerText = '⚠️ कृपया महीना चुनें।';
+                document.getElementById('summaryBoxes').innerHTML = '';
+                return;
+            }
+            const [year, month] = monthStr.split('-').map(Number);
+            const filtered = transactions.filter(t => {
+                const [y, m] = t.date.split('-').map(Number);
+                return y === year && m === month;
+            });
+
+            // Totals
+            let totalExpense = 0, totalIncome = 0;
+            let deepakExpense = 0, deepakIncome = 0;
+            let jagdishExpense = 0, jagdishIncome = 0;
+
+            filtered.forEach(t => {
+                if (t.type === 'expense') {
+                    totalExpense += t.amount;
+                    if (t.person === 'Deepak') deepakExpense += t.amount;
+                    else jagdishExpense += t.amount;
+                } else {
+                    totalIncome += t.amount;
+                    if (t.person === 'Deepak') deepakIncome += t.amount;
+                    else jagdishIncome += t.amount;
+                }
+            });
+
+            const netProfit = totalIncome - totalExpense;
+            const halfProfit = netProfit / 2;
+
+            // Net per partner (income - expense)
+            const deepakNet = deepakIncome - deepakExpense;
+            const jagdishNet = jagdishIncome - jagdishExpense;
+
+            // Settlement: deepak should get (halfProfit - deepakNet) from jagdish (if positive)
+            const deepakAdjustment = halfProfit - deepakNet;
+            let settlementText = '';
+            if (Math.abs(deepakAdjustment) < 0.5) {
+                settlementText = '✅ कोई लेन-देन नहीं, बराबर हो गया।';
+            } else if (deepakAdjustment > 0) {
+                settlementText = `🔁 जगदीश को दीपक को देना होगा: ${formatMoney(deepakAdjustment)} (दीपक को मिलेगा)`;
+            } else {
+                settlementText = `🔁 दीपक को जगदीश को देना होगा: ${formatMoney(-deepakAdjustment)} (जगदीश को मिलेगा)`;
+            }
+
+            // Update summary boxes
+            const summaryHtml = `
+                <div class="summary-box">
+                    <h3>💰 कुल आमदनी</h3>
+                    <div class="amount">${formatMoney(totalIncome)}</div>
+                    <div class="small-note">दीपक: ${formatMoney(deepakIncome)} | जगदीश: ${formatMoney(jagdishIncome)}</div>
+                </div>
+                <div class="summary-box">
+                    <h3>🧾 कुल खर्चा</h3>
+                    <div class="amount">${formatMoney(totalExpense)}</div>
+                    <div class="small-note">दीपक: ${formatMoney(deepakExpense)} | जगदीश: ${formatMoney(jagdishExpense)}</div>
+                </div>
+                <div class="summary-box">
+                    <h3>📈 शुद्ध लाभ/हानि</h3>
+                    <div class="amount">${formatMoney(netProfit)}</div>
+                    <div class="small-note">50% हिस्सा = ${formatMoney(halfProfit)} प्रति व्यक्ति</div>
+                </div>
+                <div class="summary-box">
+                    <h3>👥 नेट स्थिति</h3>
+                    <div class="amount">दीपक: ${formatMoney(deepakNet)}</div>
+                    <div class="amount">जगदीश: ${formatMoney(jagdishNet)}</div>
+                </div>
+            `;
+            document.getElementById('summaryBoxes').innerHTML = summaryHtml;
+            document.getElementById('settlementMessage').innerHTML = settlementText;
+        }
+
+        // Set today's date in the date picker
+        function setDefaultDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2,'0');
+            const dd = String(today.getDate()).padStart(2,'0');
+            document.getElementById('txnDate').value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        // Set current month in month picker
+        function setCurrentMonth() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2,'0');
+            document.getElementById('monthSelector').value = `${yyyy}-${mm}`;
+        }
+
+        // Add transaction
+        function addTransaction() {
+            const date = document.getElementById('txnDate').value;
+            const desc = document.getElementById('txnDesc').value.trim();
+            const amount = parseFloat(document.getElementById('txnAmount').value);
+            const type = document.getElementById('txnType').value;
+            const person = document.getElementById('txnPerson').value;
+
+            if (!date) {
+                alert('कृपया तारीख चुनें');
+                return;
+            }
+            if (!desc) {
+                alert('विवरण दर्ज करें');
+                return;
+            }
+            if (!amount || amount <= 0) {
+                alert('सही राशि दर्ज करें (धनात्मक)');
+                return;
+            }
+
+            const newTxn = {
+                id: Date.now() + Math.random(),
+                date,
+                description: desc,
+                amount,
+                type,
+                person
+            };
+            transactions.push(newTxn);
+            saveTransactions();
+            renderTable();
+
+            // Clear form but keep date and person maybe
+            document.getElementById('txnDesc').value = '';
+            document.getElementById('txnAmount').value = '';
+            document.getElementById('txnType').value = 'expense';
+            // Recalculate if month selected
+            const monthVal = document.getElementById('monthSelector').value;
+            if (monthVal) calculateForMonth(monthVal);
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('क्या आप सच में सारा डेटा मिटाना चाहते हैं? यह वापस नहीं आएगा।')) {
+                transactions = [];
+                saveTransactions();
+                renderTable();
+                document.getElementById('summaryBoxes').innerHTML = '';
+                document.getElementById('settlementMessage').innerText = '🗑️ सारा डेटा मिटा दिया गया। नया जोड़ें।';
+            }
+        }
+
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            loadTransactions();
+            renderTable();
+            setDefaultDate();
+            setCurrentMonth();
+            // Auto calculate for current month on load
+            const monthVal = document.getElementById('monthSelector').value;
+            calculateForMonth(monthVal);
+
+            // Event listeners
+            document.getElementById('addBtn').addEventListener('click', addTransaction);
+            document.getElementById('calcBtn').addEventListener('click', () => {
+                const monthVal = document.getElementById('monthSelector').value;
+                calculateForMonth(monthVal);
+            });
+            document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
+
+            // optional: press enter in fields? not needed
+        });
+    })();
+</script>
+</body>
+</html>

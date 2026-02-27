@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>DJ Bites · दीपक & जगदीश (Firebase v9 modular)</title>
+    <!-- Google Font & Font Awesome (unchanged) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ---------- same professional CSS, exactly as before ---------- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f4f7fc; font-family: 'Inter', sans-serif; padding: 24px 16px; color: #1a2b3e; }
+        .app-wrapper { max-width: 1300px; margin: 0 auto; }
+        .brand-header { background: linear-gradient(145deg, #1e3f4d 0%, #1b5a5f 100%); border-radius: 32px; padding: 28px 32px; margin-bottom: 30px; box-shadow: 0 15px 28px -8px rgba(0,40,50,0.3); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; color: white; }
+        .brand-title { display: flex; align-items: center; gap: 18px; }
+        .brand-title i { font-size: 3rem; color: #f9b84a; filter: drop-shadow(0 4px 6px #00000030); }
+        .brand-title h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+        .brand-title .tagline { font-size: 1rem; opacity: 0.85; font-weight: 400; margin-top: 4px; }
+        .partner-pill { background: rgba(255,255,255,0.12); backdrop-filter: blur(5px); padding: 12px 28px; border-radius: 70px; display: flex; align-items: center; gap: 15px; font-weight: 500; border: 1px solid rgba(255,255,255,0.2); font-size: 1.1rem; }
+        .partner-pill span { background: #e67e22; padding: 6px 18px; border-radius: 40px; font-weight: 600; color: white; }
+        .card { background: white; border-radius: 30px; padding: 28px; margin-bottom: 28px; box-shadow: 0 12px 28px -8px rgba(0,30,50,0.1); border: 1px solid #dde9f5; transition: box-shadow 0.2s; }
+        .card:hover { box-shadow: 0 20px 32px -8px #0b2a4140; }
+        .card-header { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 600; color: #164455; margin-bottom: 24px; border-bottom: 2px solid #e9f0f6; padding-bottom: 14px; }
+        .card-header i { color: #e67e22; font-size: 2rem; width: 40px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 22px; align-items: end; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.3px; color: #4b6379; }
+        .input-group input, .input-group select { padding: 14px 18px; border: 2px solid #dae3ec; border-radius: 40px; font-size: 0.95rem; background: white; transition: 0.2s; font-family: 'Inter', sans-serif; }
+        .input-group input:focus, .input-group select:focus { border-color: #e67e22; outline: none; box-shadow: 0 0 0 4px #e67e2230; }
+        .btn { background: #e67e22; color: white; border: none; padding: 14px 24px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 2px solid transparent; box-shadow: 0 8px 14px -6px #e67e22a0; }
+        .btn:hover { background: #cf6f1e; transform: scale(1.02); box-shadow: 0 12px 20px -6px #e67e22c0; }
+        .btn-secondary { background: #2c3e50; box-shadow: none; }
+        .btn-secondary:hover { background: #1e2f3f; }
+        .btn-outline { background: transparent; color: #1e3f4d; border: 2px solid #bfd3e6; box-shadow: none; }
+        .btn-outline:hover { background: #e6f0fa; border-color: #8aa9c9; }
+        .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; background: white; padding: 16px 28px; border-radius: 70px; margin-bottom: 28px; border: 1px solid #d4e2f0; }
+        .month-selector { display: flex; align-items: center; gap: 12px; background: #f4fafd; padding: 6px 16px 6px 26px; border-radius: 60px; }
+        .month-selector label { font-weight: 600; color: #174455; }
+        .month-selector input { border: 2px solid #cbddec; border-radius: 40px; padding: 10px 20px; font-family: 'Inter', sans-serif; }
+        .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-bottom: 26px; }
+        .stat-tile { background: white; border-radius: 24px; padding: 22px 18px; border: 1px solid #eaf1f9; transition: 0.1s; }
+        .stat-tile:hover { border-color: #e67e22; }
+        .stat-title { font-size: 0.8rem; text-transform: uppercase; color: #5f7a99; display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+        .stat-number { font-size: 2.2rem; font-weight: 700; color: #0b3142; line-height: 1.2; }
+        .stat-footer { margin-top: 14px; font-size: 0.8rem; background: #f1f8ff; padding: 6px 14px; border-radius: 30px; display: inline-block; color: #1a5173; }
+        .settlement-box { background: linear-gradient(100deg, #e2f0e8, #f0f9f0); border-left: 10px solid #2ecc71; border-radius: 40px; padding: 24px 34px; font-size: 1.4rem; font-weight: 600; color: #145a32; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 20px; }
+        .table-wrapper { background: white; border-radius: 26px; overflow-x: auto; box-shadow: 0 5px 20px #00000008; }
+        table { width: 100%; border-collapse: collapse; min-width: 750px; }
+        th { text-align: left; padding: 20px 18px; background: #f8fcff; color: #163e54; font-weight: 600; font-size: 0.9rem; border-bottom: 2px solid #d7e5f2; }
+        td { padding: 18px; border-bottom: 1px solid #e5f0fa; color: #1b4057; }
+        .badge { display: inline-block; padding: 5px 18px; border-radius: 60px; font-weight: 600; font-size: 0.8rem; }
+        .badge.expense { background: #fee9e5; color: #a13026; }
+        .badge.income { background: #e0f3e9; color: #0f6e3f; }
+        .delete-btn { background: none; border: 2px solid #d0e0ef; border-radius: 40px; padding: 8px 18px; color: #587b9c; font-weight: 600; cursor: pointer; transition: all 0.1s; }
+        .delete-btn:hover { background: #feeceb; border-color: #c0392b; color: #b03a2e; }
+        .empty-row td { padding: 40px; text-align: center; color: #859fb2; }
+        .footer-note { margin-top: 20px; background: #eaf3fb; padding: 14px 26px; border-radius: 60px; color: #285577; font-size: 0.9rem; display: flex; align-items: center; gap: 16px; }
+        @media (max-width: 900px) { .summary-grid { grid-template-columns: repeat(2,1fr); } .brand-header { flex-direction: column; align-items: start; gap: 16px; } }
+        @media (max-width: 550px) { .summary-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <!-- header (same) -->
+    <div class="brand-header">
+        <div class="brand-title">
+            <i class="fas fa-egg"></i>
+            <div>
+                <h1>DJ Bites</h1>
+                <div class="tagline"><i class="fas fa-cloud-upload-alt"></i> Firebase v9 · modular real‑time</div>
+            </div>
+        </div>
+        <div class="partner-pill">
+            <i class="fas fa-user-circle"></i> दीपक <span style="background:#2c3e50;">50%</span>
+            <i class="fas fa-user-circle" style="margin-left:10px;"></i> जगदीश <span>50%</span>
+        </div>
+    </div>
+
+    <!-- add transaction card -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-plus-circle"></i> नया लेन-देन दर्ज करें
+        </div>
+        <div class="form-grid">
+            <div class="input-group">
+                <label><i class="far fa-calendar"></i> तारीख</label>
+                <input type="date" id="txnDate">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-pen"></i> विवरण</label>
+                <input type="text" id="txnDesc" placeholder="जैसे समान, चाय, बिस्कुट...">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-rupee-sign"></i> राशि (₹)</label>
+                <input type="number" id="txnAmount" step="1" min="1" placeholder="0">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-tag"></i> प्रकार</label>
+                <select id="txnType">
+                    <option value="expense">🧾 खर्चा</option>
+                    <option value="income">💰 आमदनी</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> व्यक्ति</label>
+                <select id="txnPerson">
+                    <option value="Deepak">दीपक</option>
+                    <option value="Jagdish">जगदीश</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <button class="btn" id="addBtn" style="width:100%;"><i class="fas fa-save"></i> जोड़ें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- month & actions -->
+    <div class="toolbar">
+        <div class="month-selector">
+            <label for="monthSelector"><i class="far fa-calendar-alt"></i> महीना :</label>
+            <input type="month" id="monthSelector">
+            <button class="btn-secondary" id="calcBtn" style="padding:10px 28px;"><i class="fas fa-calculator"></i> गणना</button>
+        </div>
+        <button class="btn-outline" id="clearAllBtn"><i class="fas fa-trash-alt"></i> सभी डेटा मिटाएँ</button>
+    </div>
+
+    <!-- monthly summary -->
+    <div class="card" style="background:#fbfeff;">
+        <div class="card-header">
+            <i class="fas fa-chart-pie"></i> महीने का हिसाब
+        </div>
+        <div class="summary-grid" id="summaryBoxes">
+            <!-- dynamic -->
+        </div>
+        <div id="settlementMsg" class="settlement-box">
+            <i class="fas fa-exchange-alt fa-2x"></i>
+            <span>महीना चुनें और 'गणना' दबाएँ</span>
+        </div>
+    </div>
+
+    <!-- all transactions table -->
+    <div class="card" style="padding-bottom:16px;">
+        <div class="card-header">
+            <i class="fas fa-list"></i> सभी लेन-देन
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>तारीख</th><th>विवरण</th><th>राशि (₹)</th><th>प्रकार</th><th>व्यक्ति</th><th></th></tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr class="empty-row"><td colspan="6"><i class="fas fa-spinner fa-pulse"></i> लोड हो रहा...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="footer-note">
+            <i class="fas fa-database" style="color:#e67e22;"></i> डेटा Firebase v9 (modular) क्लाउड में सेव, दोनों साथी एक ही डेटा देखेंगे
+        </div>
+    </div>
+</div>
+
+<!-- ========== FIREBASE v9 MODULAR SCRIPT with YOUR config ========== -->
+<script type="module">
+    // 1. Import Firebase v9 modular functions
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+    import { getDatabase, ref, onValue, push, remove } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js';
+
+    // 2. Your actual Firebase configuration (provided by user)
+    const firebaseConfig = {
+        apiKey: "AIzaSyC0fbNGtN4zk1acYVTDsDjLu2CiZ9EaNQM",
+        authDomain: "dj-bites.firebaseapp.com",
+        databaseURL: "https://dj-bites-default-rtdb.firebaseio.com",
+        projectId: "dj-bites",
+        storageBucket: "dj-bites.firebasestorage.app",
+        messagingSenderId: "287236103744",
+        appId: "1:287236103744:web:a3c0a2aed2b279193b49a5"
+    };
+
+    // 3. Initialize Firebase and Database reference
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const transactionsRef = ref(db, 'transactions');   // same node as before
+
+    // 4. Local cache array
+    let transactions = [];
+
+    // 5. Helper: format money
+    function formatMoney(amt) {
+        return '₹' + amt.toLocaleString('en-IN', {maximumFractionDigits:0});
+    }
+
+    // 6. Render table (same logic, but with v9 remove call)
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        if (!transactions.length) {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="6"><i class="fas fa-receipt"></i> कोई लेन-देन नहीं। ऊपर जोड़ें।</td></tr>`;
+            return;
+        }
+        // show latest first
+        const sorted = [...transactions].sort((a,b) => b.date.localeCompare(a.date) || (b.id < a.id ? 1 : -1));
+        let html = '';
+        sorted.forEach(txn => {
+            const typeClass = txn.type === 'expense' ? 'expense' : 'income';
+            const typeText = txn.type === 'expense' ? '🧾 खर्चा' : '💰 आमदनी';
+            const personName = txn.person === 'Deepak' ? 'दीपक' : 'जगदीश';
+            html += `<tr>
+                <td>${txn.date}</td>
+                <td>${txn.description}</td>
+                <td><strong>${formatMoney(txn.amount)}</strong></td>
+                <td><span class="badge ${typeClass}">${typeText}</span></td>
+                <td><i class="fas fa-user" style="color:${txn.person==='Deepak'?'#e67e22':'#2c3e50'}; margin-right:6px;"></i>${personName}</td>
+                <td><button class="delete-btn" data-id="${txn.id}"><i class="fas fa-trash-alt"></i> हटाएँ</button></td>
+            </tr>`;
+        });
+        tbody.innerHTML = html;
+
+        // delete event with v9 remove
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.id;
+                if (confirm('क्या यह एंट्री हटाना चाहते हैं?')) {
+                    // Create a reference to the specific child and remove
+                    const itemRef = ref(db, `transactions/${id}`);
+                    remove(itemRef);  // v9 modular remove
+                }
+            });
+        });
+    }
+
+    // 7. Real-time listener (v9 onValue)
+    onValue(transactionsRef, (snapshot) => {
+        const data = snapshot.val();
+        transactions = [];
+        if (data) {
+            Object.keys(data).forEach(key => {
+                transactions.push({ id: key, ...data[key] });
+            });
+        }
+        renderTable();
+        const monthVal = document.getElementById('monthSelector').value;
+        if (monthVal) calculateForMonth(monthVal);
+    });
+
+    // 8. Add transaction function using v9 push
+    function addTransaction() {
+        const date = document.getElementById('txnDate').value;
+        const desc = document.getElementById('txnDesc').value.trim();
+        const amount = parseFloat(document.getElementById('txnAmount').value);
+        const type = document.getElementById('txnType').value;
+        const person = document.getElementById('txnPerson').value;
+
+        if (!date) { alert('तारीख चुनें'); return; }
+        if (!desc) { alert('विवरण भरें'); return; }
+        if (!amount || amount <= 0) { alert('सही राशी डालें'); return; }
+
+        const newTxn = { date, description: desc, amount, type, person };
+        push(transactionsRef, newTxn);   // v9 modular push
+
+        // clear form (except date)
+        document.getElementById('txnDesc').value = '';
+        document.getElementById('txnAmount').value = '';
+    }
+
+    // 9. Calculate month summary (unchanged logic, uses global transactions)
+    function calculateForMonth(monthStr) {
+        if (!monthStr) return;
+        const [year, month] = monthStr.split('-').map(Number);
+        const filtered = transactions.filter(t => {
+            const [y, m] = t.date.split('-').map(Number);
+            return y === year && m === month;
+        });
+
+        let totalExpense = 0, totalIncome = 0;
+        let deepakExpense = 0, deepakIncome = 0;
+        let jagdishExpense = 0, jagdishIncome = 0;
+
+        filtered.forEach(t => {
+            if (t.type === 'expense') {
+                totalExpense += t.amount;
+                if (t.person === 'Deepak') deepakExpense += t.amount;
+                else jagdishExpense += t.amount;
+            } else {
+                totalIncome += t.amount;
+                if (t.person === 'Deepak') deepakIncome += t.amount;
+                else jagdishIncome += t.amount;
+            }
+        });
+
+        const netProfit = totalIncome - totalExpense;
+        const halfProfit = netProfit / 2;
+        const deepakNet = deepakIncome - deepakExpense;
+        const jagdishNet = jagdishIncome - jagdishExpense;
+        const adjustment = halfProfit - deepakNet;
+
+        let settlement = '';
+        if (Math.abs(adjustment) < 0.5) {
+            settlement = '✅ कोई लेन-देन नहीं, बराबर हो गया।';
+        } else if (adjustment > 0) {
+            settlement = `🔁 जगदीश → दीपक : <span style="background:white; padding:6px 24px; border-radius:60px; margin-left:12px;">${formatMoney(adjustment)}</span> (दीपक को मिलेंगे)`;
+        } else {
+            settlement = `🔁 दीपक → जगदीश : <span style="background:white; padding:6px 24px; border-radius:60px; margin-left:12px;">${formatMoney(-adjustment)}</span> (जगदीश को मिलेंगे)`;
+        }
+
+        document.getElementById('summaryBoxes').innerHTML = `
+            <div class="stat-tile"><div class="stat-title"><i class="fas fa-arrow-up" style="color:#2ecc71;"></i> कुल आमदनी</div>
+                <div class="stat-number">${formatMoney(totalIncome)}</div>
+                <div class="stat-footer">दीपक: ${formatMoney(deepakIncome)} | जगदीश: ${formatMoney(jagdishIncome)}</div>
+            </div>
+            <div class="stat-tile"><div class="stat-title"><i class="fas fa-arrow-down" style="color:#c0392b;"></i> कुल खर्चा</div>
+                <div class="stat-number">${formatMoney(totalExpense)}</div>
+                <div class="stat-footer">दीपक: ${formatMoney(deepakExpense)} | जगदीश: ${formatMoney(jagdishExpense)}</div>
+            </div>
+            <div class="stat-tile"><div class="stat-title"><i class="fas fa-chart-line"></i> शुद्ध लाभ/हानि</div>
+                <div class="stat-number">${formatMoney(netProfit)}</div>
+                <div class="stat-footer">50% हिस्सा = ${formatMoney(halfProfit)}</div>
+            </div>
+            <div class="stat-tile"><div class="stat-title"><i class="fas fa-users"></i> नेट स्थिति</div>
+                <div class="stat-number">${formatMoney(deepakNet)} / ${formatMoney(jagdishNet)}</div>
+                <div class="stat-footer">दीपक / जगदीश</div>
+            </div>
+        `;
+        document.getElementById('settlementMsg').innerHTML = `<i class="fas fa-hand-holding-usd fa-2x"></i> ${settlement}`;
+    }
+
+    // 10. Clear all data with v9 remove on the whole node
+    function clearAllData() {
+        if (confirm('⚠️ सारा डेटा हमेशा के लिए मिट जाएगा। क्या आप सुनिश्चित हैं?')) {
+            remove(transactionsRef);   // v9 modular remove
+        }
+    }
+
+    // 11. Set default date & month
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2,'0');
+    const dd = String(today.getDate()).padStart(2,'0');
+    document.getElementById('txnDate').value = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('monthSelector').value = `${yyyy}-${mm}`;
+
+    // 12. Attach event listeners (DOM elements exist by now)
+    document.getElementById('addBtn').addEventListener('click', addTransaction);
+    document.getElementById('calcBtn').addEventListener('click', () => {
+        const monthVal = document.getElementById('monthSelector').value;
+        if (monthVal) calculateForMonth(monthVal);
+        else alert('पहले महीना चुनें');
+    });
+    document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
+
+    // (Optional) run a calculation on load if month selected
+    setTimeout(() => {
+        const monthVal = document.getElementById('monthSelector').value;
+        if (monthVal) calculateForMonth(monthVal);
+    }, 100);
+</script>
+</body>
+</html>
